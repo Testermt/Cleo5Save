@@ -1,0 +1,17 @@
+{$CLEO .cs}
+
+0000: NOP
+03A4: name_thread 'MAIN'
+
+:MAIN_START
+wait 0
+if
+  0256:   player $PLAYER_CHAR defined
+jf @MAIN_START
+
+0001: wait 0
+0417: create_pickup_marker_at 0.0 0.0 0.0 color 1
+
+:MAIN_LOOP
+wait 250
+jump @MAIN_LOOP
