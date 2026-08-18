@@ -1,0 +1,69 @@
+{$CLEO .csa}
+
+// Thread initialization
+0000: NOP
+03A4: script_name 'CARSPAWN'
+
+:CHECK_GAME_LOADED
+0001: wait 500 ms
+0256:   is_player_defined $PLAYER_CHAR
+004D: jump_if_false @CHECK_GAME_LOADED
+
+:MAIN_LOOP
+0001: wait 100 ms
+
+// Ensure player is valid and alive
+0256:   is_player_defined $PLAYER_CHAR
+004D: jump_if_false @MAIN_LOOP
+
+// Check if player is NOT in a car
+80DF:   not is_char_in_any_car $PLAYER_ACTOR
+004D: jump_if_false @MAIN_LOOP
+
+// Activation check: Hold Crouch / Action key or Mobile Touch trigger
+// Opcode 00E1 key 19 is commonly mapped to secondary action/horn/crouch
+00E1:   player 0 pressed_key 19
+004D: jump_if_false @MAIN_LOOP
+
+// Request vehicle model
+0247: request_model #INFERNUS
+
+:LOAD_MODEL
+0001: wait 0 ms
+0248:   model #INFERNUS available
+004D: jump_if_false @LOAD_MODEL
+
+// Calculate position 5.0m in front of player
+04C4: store_coords_to 0@ 1@ 2@ from_actor $PLAYER_ACTOR with_offset 0.0 5.0 0.5
+0172: 3@ = actor $PLAYER_ACTOR z_angle
+
+// Create car and set heading
+00A5: 4@ = create_car #INFERNUS at 0@ 1@ 2@
+0175: set_car 4@ z_angle 3@
+
+// Release model from memory
+0249: release_model #INFERNUS
+
+// Provide visual feedback
+03E5: show_text_box 'SPAWNED'
+
+// Debounce wait to prevent multiple spawns
+0001: wait 1500 ms
+0002: jump @MAIN_LOOP
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
