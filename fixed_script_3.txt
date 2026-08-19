@@ -1,0 +1,38 @@
+{$CLEO .csa}
+script_name "flynpcs"
+
+0001: wait 2000 ms
+
+:FLY_LOOP
+0001: wait 0 ms
+
+00D6: if
+  is_player_playing $PLAYER_CHAR
+00D7: jump_if_false @FLY_LOOP
+
+0@ = 0 
+
+:ACTOR_CHECK_LOOP
+0001: wait 0 ms
+00D6: if
+  056E: actor 0@ defined
+00D7: jump @PROCESS_ACTOR
+jump @NEXT_ACTOR
+
+:PROCESS_ACTOR
+00D6: if
+  003A: 0@ == $PLAYER_ACTOR
+004D: jump_if_false @LAUNCH_NPC
+jump @NEXT_ACTOR
+
+:LAUNCH_NPC
+00A0: store_actor 0@ position_to 2@ 3@ 4@
+000A: 4@ += 10.0
+00A1: put_actor 0@ at 2@ 3@ 4@
+
+:NEXT_ACTOR
+0@ += 1
+001B: 0@ > 3000
+004D: jump_if_false @ACTOR_CHECK_LOOP
+
+jump @FLY_LOOP
