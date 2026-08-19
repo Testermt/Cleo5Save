@@ -1,0 +1,108 @@
+{$CLEO .cs}
+0000:
+
+03A4: script_name 'MARATHON'
+
+:AUDIO_CHECK
+wait 0
+if
+0AAB:   file_exists "CLEO\SCORE\MARATHON.MP3"   
+then
+//0@ = 1
+jump @DEF
+end
+
+
+:DEF
+wait 0
+if
+0256:   player $PLAYER_CHAR defined
+then
+ jump @CHECKMISSION
+else
+ jump @DEF
+end
+
+:CHECKMISSION
+wait 0
+if and
+$MISSION_BEATTHECOCK_TYPE = 1 
+00FF:   actor $PLAYER_ACTOR sphere 0 in_sphere 181.0 -1878.0 2.0 radius 20.4 20.8 20.5 on_foot 
+$ONMISSION == 1
+then
+0AAD: set_mp3 3@ perform_action 0
+0AAE: release_mp3 3@
+jump @PLAY
+else
+if and
+$MISSION_BEATTHECOCK_TYPE = 2 
+00FF:   actor $PLAYER_ACTOR sphere 0 in_sphere 2135.432 -67.9555 20.8 radius 20.4 20.8 20.5 on_foot  
+$ONMISSION == 1
+then
+0AAD: set_mp3 3@ perform_action 0
+0AAE: release_mp3 3@
+jump @PLAY
+else
+jump @CHECKMISSION
+end
+end
+
+
+
+:PLAY
+wait 0
+0AAD: set_mp3 3@ perform_action 0
+0AAE: release_mp3 3@
+0AAC: 3@ = load_mp3 "CLEO\SCORE\MARATHON.MP3"
+0AAD: set_mp3 3@ perform_action 1
+0AC0: audiostream 3@ loop 1
+jump @CHECKNOTMISSION
+
+:CHECKNOTMISSION
+wait 0
+gosub @PAUSE
+if
+$ONMISSION == 0
+then
+jump @STOP
+else
+jump @CHECKNOTMISSION
+end
+
+
+:STOP
+0ABC: set_audio_stream 3@ volume 0.9
+wait 200
+0ABC: set_audio_stream 3@ volume 0.8
+wait 200
+0ABC: set_audio_stream 3@ volume 0.7
+wait 200
+0ABC: set_audio_stream 3@ volume 0.6
+wait 200
+0ABC: set_audio_stream 3@ volume 0.5
+wait 200
+0ABC: set_audio_stream 3@ volume 0.4
+wait 200
+0ABC: set_audio_stream 3@ volume 0.3
+wait 200
+0ABC: set_audio_stream 3@ volume 0.2
+wait 200
+0ABC: set_audio_stream 3@ volume 0.1
+wait 300
+0AAD: set_mp3 3@ perform_action 0
+0AAE: release_mp3 3@
+jump @DEF
+
+:PAUSE
+051E: 29@ = get_current_radio_station
+if
+    29@ < 12   
+then
+    0ABC: set_audio_stream 3@ volume 0.01
+    return
+else
+    0ABC: set_audio_stream 3@ volume 0.99
+    return
+end
+
+0A93: terminate_this_custom_script
