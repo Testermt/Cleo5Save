@@ -1,0 +1,106 @@
+{$CLEO .csi}
+
+nop 
+script_name 'MARATHON'
+wait 0
+if 
+0AAB: file_exists "COM.ROCKSTARGAMES.GTASA\CLEO\SCORE\MARATHON.WAV"
+goto_if_false @MARATHON_94
+goto @MARATHON_94
+
+:MARATHON_94
+wait 0
+if 
+  is_player_playing $PLAYER_CHAR
+goto_if_false @MARATHON_128
+goto @MARATHON_135
+goto @MARATHON_135
+
+:MARATHON_128
+goto @MARATHON_94
+
+:MARATHON_135
+wait 0
+if and
+$409 = 1
+  locate_char_on_foot_3d $PLAYER_ACTOR sphere 0 in_sphere 181.0 -1878.0 2.0 radius 20.4 20.8 20.5
+  $ONMISSION == 1
+goto_if_false @MARATHON_227
+0AAD: set_audio_stream 3@ state 0
+0AAE: remove_audio_stream 3@
+goto @MARATHON_322
+goto @MARATHON_322
+
+:MARATHON_227
+if and
+$409 = 2
+  locate_char_on_foot_3d $PLAYER_ACTOR sphere 0 in_sphere 2135.4319 -67.9555 20.8 radius 20.4 20.8 20.5
+  $ONMISSION == 1
+goto_if_false @MARATHON_315
+0AAD: set_audio_stream 3@ state 0
+0AAE: remove_audio_stream 3@
+goto @MARATHON_322
+goto @MARATHON_322
+
+:MARATHON_315
+goto @MARATHON_135
+
+:MARATHON_322
+wait 0
+0AAD: set_audio_stream 3@ state 0
+0AAE: remove_audio_stream 3@
+0AAC: 3@ = load_audio_stream "COM.ROCKSTARGAMES.GTASA\CLEO\SCORE\MARATHON.WAV"
+0AAD: set_audio_stream 3@ state 1
+0AC0: set_audio_stream 3@ looped 1
+goto @MARATHON_413
+
+:MARATHON_413
+wait 0
+gosub @MARATHON_617
+if 
+  $ONMISSION == 0
+goto_if_false @MARATHON_456
+goto @MARATHON_463
+goto @MARATHON_463
+
+:MARATHON_456
+goto @MARATHON_413
+
+:MARATHON_463
+0ABC: set_audio_stream 3@ volume 0.9
+wait 200
+0ABC: set_audio_stream 3@ volume 0.8
+wait 200
+0ABC: set_audio_stream 3@ volume 0.7
+wait 200
+0ABC: set_audio_stream 3@ volume 0.6
+wait 200
+0ABC: set_audio_stream 3@ volume 0.5
+wait 200
+0ABC: set_audio_stream 3@ volume 0.4
+wait 200
+0ABC: set_audio_stream 3@ volume 0.3
+wait 200
+0ABC: set_audio_stream 3@ volume 0.2
+wait 200
+0ABC: set_audio_stream 3@ volume 0.1
+wait 300
+0AAD: set_audio_stream 3@ state 0
+0AAE: remove_audio_stream 3@
+goto @MARATHON_94
+
+:MARATHON_617
+get_radio_channel 29@
+if 
+  29@ < 12
+goto_if_false @MARATHON_659
+0ABC: set_audio_stream 3@ volume 0.01
+return 
+goto @MARATHON_671
+
+:MARATHON_659
+0ABC: set_audio_stream 3@ volume 0.99
+return 
+
+:MARATHON_671
+0A93: terminate_this_custom_script
